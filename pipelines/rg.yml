@@ -1,0 +1,52 @@
+trigger:
+- master
+
+variables:
+  backendServiceArm: 'Visual Studio Enterprise(17b12858-3960-4e6f-a663-a06fdae23428)'
+  backendAzureRmResourceGroupName: 'resourcegroup-tfstate'
+  backendAzureRmStorageAccountName: 'terraform0tfstate10'
+  backendAzureRmContainerName: 'tfstate'
+  location: 'westeurope'
+  tfBackendEnvironment: FreeTrialSubConnection
+  devEnvironment: dev
+  testEnvironment: test
+  prodEnvironment: prod
+  tfWorkingDirectory: 'terraform'
+
+stages:
+
+- template: template-terraform-stages.yml
+  parameters:
+    prefix: ${{ variables.devEnvironment }}
+    environmentDisplayName: Dev
+    backendServiceArm: ${{ variables.backendServiceArm }}
+    backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+    backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+    backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
+    backendAzureRmKey: $(devEnvironment).tfstate
+    workingDirectory: $(tfWorkingDirectory)
+    dependsOn: []
+
+- template: template-terraform-stages.yml
+  parameters:
+    prefix: ${{ variables.testEnvironment }}
+    environmentDisplayName: Test
+    backendServiceArm: ${{ variables.backendServiceArm }}
+    backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+    backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+    backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
+    backendAzureRmKey: $(testEnvironment).tfstate
+    workingDirectory: $(tfWorkingDirectory)
+    dependsOn: []
+
+- template: template-terraform-stages.yml
+  parameters:
+    prefix: ${{ variables.prodEnvironment }}
+    environmentDisplayName: Production
+    backendServiceArm: ${{ variables.backendServiceArm }}
+    backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+    backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+    backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
+    backendAzureRmKey: $(prodEnvironment).tfstate
+    workingDirectory: $(tfWorkingDirectory)
+    dependsOn: []
