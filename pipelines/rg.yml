@@ -15,7 +15,7 @@ variables:
 
 stages:
 
-- template: template-terraform-stages.yml
+- template: t_rg.yml
   parameters:
     prefix: ${{ variables.devEnvironment }}
     environmentDisplayName: Dev
@@ -27,7 +27,7 @@ stages:
     workingDirectory: $(tfWorkingDirectory)
     dependsOn: []
 
-- template: template-terraform-stages.yml
+- template: t_rg.yml
   parameters:
     prefix: ${{ variables.testEnvironment }}
     environmentDisplayName: Test
@@ -39,7 +39,7 @@ stages:
     workingDirectory: $(tfWorkingDirectory)
     dependsOn: []
 
-- template: template-terraform-stages.yml
+- template: t_rg.yml
   parameters:
     prefix: ${{ variables.prodEnvironment }}
     environmentDisplayName: Production
