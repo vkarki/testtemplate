@@ -1,4 +1,5 @@
 parameters:
+  prefix: ''
   environment: ''
   environmentDisplayName: ''
   backendServiceArm: ''
@@ -41,12 +42,12 @@ stages:
         backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
     
     - task: TerraformTaskV1@0
-      displayName: terraform plan -var prefix=${{ parameters.environment }} -out=${{ parameters.backendAzureRmKey }}
+      displayName: terraform plan -var prefix=${{ parameters.prefix }} -out=${{ parameters.backendAzureRmKey }}
       inputs:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: ${{ parameters.workingDirectory }}
-        commandOptions: '-var prefix=${{ parameters.environment }} -out=${{ parameters.backendAzureRmKey }}'
+        commandOptions: '-var prefix=${{ parameters.prefix }} -out=${{ parameters.backendAzureRmKey }}'
         environmentServiceNameAzureRM: ${{ parameters.backendServiceArm }}
     
     - task: PowerShell@2
